@@ -1,24 +1,34 @@
-test mode
+<?php
 
-<?
+require_once 'vendor/autoload.php';
+//echo phpinfo();
 
-//use Saas\Sdk\Api;
+use Saas\Sdk\Api;
 
+$apiKey ='5e23feb840736228c748e2015208c643-1zphLE';
+$apiSecret='eyJpdiI6ImoyR1hUcTBlOEZicTI1WHBOeFRTOWJSMUNWRCtFTndKMmVjYnA2WTlUS289IiwidmFsdWUiOiJ2aGNpSnExcEJBSEZRaFpIOGVacFZEQmhncGxHQ0tpK0N0aWRWTXo0cEZ2VkxLNTZWUDlCWnJ6Y1NyREI2dW5EUmJpVXgwVzNvMHhFOUJUZWREc1wvRGc9PSIsIm1hYyI6IjZlZTIwZWVjZTczODYzYWFmOWY5ZjkyNzRhYWYxYTA';
 
-$_options = get_option('saas-wpapi-settings');
+$api = Api::factory($apiKey, $apiSecret);
 
-//$_sdk = new SaasSdk();
-// Assuming you're set your API key/secret as $apiKey and $apiSecret variables
-//$api = $_sdk->login($_options['api_key'], $_options['api_secret']);
+$loginUrl = $api->getLoginUrl();
+echo $loginUrl .'<br>';
+//$purchaseUrl = $api->getPurchaseUrl($selectedPlanTitle); // string, eg : http://saasexample.com/start/Medium
 
-//$api2 = Api::factory($key, $secret);
+if ($api->isLogin()) {
+  // Only doing bellow stuff if the current user already login...
+  // ...
+  
+  echo 'login success';
+} else {
+  // Do this stuff otherwise
+  // ...
+  echo 'login first';
+}
+$api->checkSession(function()  {
+  //header("Location: /inbox");
+    echo 'session';
+});
+echo "Original URL :".$api->getOriginalAppUrl();
 
-print_r($api);
-print_r($api2);
-
-
-// Getting your SaaS instance login url
-//$loginUrl = $api->getLoginUrl();
-
-
-print_r($loginUrl);
+print_r($purchaseUrl);
+echo 'done';
